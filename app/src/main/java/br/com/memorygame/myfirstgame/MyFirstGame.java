@@ -1,15 +1,16 @@
 package br.com.memorygame.myfirstgame;
 
 import android.app.Application;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
+import br.com.memorygame.myfirstgame.Dao.JogadorDao;
+import br.com.memorygame.myfirstgame.Entidades.Jogador;
 
 /**
  * Created by debo_ on 15/05/2016.
  */
 public class MyFirstGame extends Application{
+    public static Jogador jogador;
+    public JogadorDao jogadorDao;
 
     public static ArrayList<Integer> imagemList = new ArrayList<Integer>();
     public static ArrayList<Integer> arrayAdapter = new ArrayList<Integer>();
@@ -17,6 +18,7 @@ public class MyFirstGame extends Application{
     public static ArrayList<Integer> imagemList2 = new ArrayList<Integer>();
 
     public MyFirstGame() {
+
 
         //Popular imagemList
         imagemList.add(R.drawable.i1);
@@ -50,24 +52,24 @@ public class MyFirstGame extends Application{
     //Verificar nível de jogo e passar número de Imagens.
     public static int getNumImg(int level) {
         int retorno = 0;
-        switch (level){
-            case 1:
-                retorno = 4;
-                break;
-            case 2:
-                retorno = 6;
-                break;
-            case 3:
-                retorno = 8;
-                break;
-            case 4:
-                retorno = 10;
-                break;
-            case 5:
-                retorno = 12;
-            default:
-                break;
-        }
-        return retorno;
+    switch (level){
+        case 1:
+            retorno = 4;
+            break;
+        case 2:
+            retorno = 6;
+            break;
+        case 3:
+            retorno = 8;
+            break;
+        case 4:
+            retorno = 10;
+            break;
+        case 5:
+            retorno = 12;
+        default:
+            break;
     }
+    return retorno;
+}
 }

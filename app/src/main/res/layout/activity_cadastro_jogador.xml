@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="1"
+    android:background="@drawable/fundo">
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Cadastro de Jogador"
+        android:id="@+id/title"
+        android:gravity="center_horizontal"
+        android:textStyle="bold"
+        android:layout_margin="30dp"
+        android:textSize="30dp" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="336dp"
+        android:layout_gravity="center_vertical">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="226dp"
+            android:layout_gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nome:"
+                android:id="@+id/textView"
+                android:textStyle="italic"
+                android:textSize="30dp" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapWords|textPersonName"
+                android:ems="10"
+                android:id="@+id/txtNome"
+                android:hint="Nome" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="E-mail:"
+                android:id="@+id/textView2"
+                android:textStyle="italic"
+                android:textSize="30dp" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:ems="10"
+                android:id="@+id/txtEmail"
+                android:layout_gravity="left|top"
+                android:hint="E-mail" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="189dp"
+                android:weightSum="1"
+                android:layout_gravity="center_horizontal|bottom">
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ok"
+                    android:id="@+id/btnOk"
+                    android:layout_weight="0.45"
+                    android:layout_gravity="left" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Limpar"
+                    android:id="@+id/btnLimpar"
+                    android:layout_weight="0.45"
+                    android:layout_gravity="right" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </FrameLayout>
+
+</LinearLayout>

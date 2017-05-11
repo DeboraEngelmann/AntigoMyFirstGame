@@ -1,6 +1,7 @@
 package br.com.memorygame.myfirstgame;
 
-import android.support.v7.app.AppCompatActivity;
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -9,19 +10,32 @@ import android.widget.GridView;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class JogoLevels extends AppCompatActivity {
+import br.com.memorygame.myfirstgame.Dao.JogadorDao;
+import br.com.memorygame.myfirstgame.Dao.LevelDao;
+import br.com.memorygame.myfirstgame.Entidades.Level;
+
+public class JogoLevels extends Activity {
     private GridView gridViewImagem;
     public static AdapterListView mAdapter;
     static ArrayList<Integer> arrayAdapter = MyFirstGame.arrayAdapter;
     static ArrayList<Integer> clicou = MyFirstGame.clicou;
     static ArrayList<Integer> imagemList2 = MyFirstGame.imagemList2;
     static ArrayList<Integer> imagemList = MyFirstGame.imagemList;
-    static int level = 1;
+    static int contJogada =0;
+    static public int idLevel;
+    private static int fim;
+    private LevelDao levelDao;
+    private static Level level;
+
 
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        contJogada=0;
+        levelDao = LevelDao.getInstance(getBaseContext());
+        level = levelDao.getLevel(idLevel);
+
         setContentView(R.layout.jogo_levels);
         gridViewImagem = (GridView) findViewById(R.id.gridViewImagens);
 
@@ -42,6 +56,7 @@ public class JogoLevels extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 int cont=0;
+                contJogada++;
                 for (int i=0;i<clicou.size();i++){
                     if (clicou.get(i)==1){
                         cont++;
@@ -68,6 +83,7 @@ public class JogoLevels extends AppCompatActivity {
                     for (int i=0;i<clicou.size();i++){
                         if (clicou.get(i)==1){
                             if (clicou.get(i) != 3) {
+
                                 arrayAdapter.set(i, R.drawable.logo);
                                 clicou.set(i, 2);
                             }
@@ -75,6 +91,7 @@ public class JogoLevels extends AppCompatActivity {
                     }
                 }
                 if (clicou.get(position) == 2) {
+
                     arrayAdapter.set(position,imagemList2.get(position));
                     clicou.set(position, 1);
                 } else if (clicou.get(position)==1){
@@ -83,6 +100,43 @@ public class JogoLevels extends AppCompatActivity {
                 }
 
                 mAdapter.notifyDataSetChanged();
+
+                fim =0;
+                for (int i=0;i<clicou.size();i++){
+                    if (clicou.get(i)==3) {
+                        fim = fim + 1;
+                    }
+                    if (clicou.size()==fim){
+                        if (MainActivity.jogador.getProgresso()<idLevel){
+                            MainActivity.jogador.setProgresso(1);
+                            JogadorDao jogadorDao = JogadorDao.getInstance(getBaseContext());
+                            jogadorDao.updateJogador(MainActivity.jogador);
+                            level.setTentativas(1);
+                            level.setJogadasLevel(contJogada/2);
+                            levelDao.updateLevel(level);
+                            Level proximoLevel = new Level();
+
+                           // if (levelDao.getLevel(MainActivity.jogador.getProgresso()).getIdLevel()<5){
+                                proximoLevel = levelDao.getLevel(MainActivity.jogador.getProgresso() +1);
+                                proximoLevel.setConcluido(1);
+
+                                levelDao.updateLevel(proximoLevel);
+                          //  }
+
+                        }
+                        level.setTentativas(1);
+                        if ((contJogada/2)< level.getJogadasLevel()){
+                            level.setJogadasLevel(contJogada/2);
+                        }
+                        levelDao.updateLevel(level);
+
+                        Intent ranking = new Intent(JogoLevels.this, Progresso.class);
+                        ranking.putExtra("idLevel",idLevel);
+                        startActivity(ranking);
+                        finish();
+
+                    }
+                }
 
 
             }
@@ -94,7 +148,7 @@ public class JogoLevels extends AppCompatActivity {
         mAdapter = new AdapterListView(JogoLevels.this, arrayAdapter);
         gridViewImagem.setAdapter(mAdapter);
 
-        for (int i = 0; i < MyFirstGame.getNumImg(level); i++) {
+        for (int i = 0; i < MyFirstGame.getNumImg(idLevel); i++) {
             imagemList2.add(imagemList.get(i));
         }
         imagemList2.addAll(imagemList2);
@@ -110,7 +164,7 @@ public class JogoLevels extends AppCompatActivity {
     private void popularArrays(){
 
         //Popular arrayAdapter
-        for (int i = 0; i < MyFirstGame.getNumImg(level); i++) {
+        for (int i = 0; i < MyFirstGame.getNumImg(idLevel); i++) {
             arrayAdapter.add(R.drawable.logo);
             clicou.add(2);
         }
